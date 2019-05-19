@@ -69,6 +69,9 @@
 		<copy overwrite="true" todir="D:/JavaPrograms/CTP-Mouse/CTP/libraries">
 			<fileset dir="${products}"/>
 		</copy>		
+		<copy overwrite="true" todir="D:/Casa/wings/misc">
+			<fileset dir="${products}"/>
+		</copy>		
 	</target>
 	
 	<target name="all" depends="clean, jar, deploy"/>

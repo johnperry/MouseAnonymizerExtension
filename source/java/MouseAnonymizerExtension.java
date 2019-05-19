@@ -79,12 +79,14 @@ public class MouseAnonymizerExtension extends AbstractPlugin implements Anonymiz
 			if (args[i].startsWith("\"") && args[i].endsWith("\"")) {
 				args[i] = args[i].substring(1, args[i].length()-1);
 			}
-			String[] s = args[i].split("=");
-			if (s.length < 2) throw new Exception("Improper assignment: "+args[i]);
-			logger.debug("id = \""+s[0]+"\"; value = \""+s[1]+"\"");
-			int sTag = DicomObject.getElementTag(s[0].trim());
-			if (sTag == 0) throw new Exception("Unparsable element specification; \""+s[0]+"\"");
-			itemDS.putXX(sTag, s[1].trim());
+			int k = args[i].indexOf("=");
+			if (k == -1) throw new Exception("Improper assignment: "+args[i]);
+			String id = args[i].substring(0, k).trim();
+			String value = args[i].substring(k+1).trim();
+			logger.debug("id = \""+id+"\"; value = \""+value+"\"");
+			int sTag = DicomObject.getElementTag(id);
+			if (sTag == 0) throw new Exception("Unparsable element specification; \""+id+"\"");
+			itemDS.putXX(sTag, value);
 		}
 			
 		//Return an instruction to force the anonymizer to keep the element
