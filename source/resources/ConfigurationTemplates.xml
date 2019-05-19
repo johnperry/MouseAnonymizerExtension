@@ -1,0 +1,15 @@
+<TemplateDefinitions>
+
+	<Components>
+
+		<Plugin>
+			<attr name="name" required="yes" default="MouseAnonymizerExtension"/>
+			<attr name="class" required="yes" default="edu.uams.anonymizer.MouseAnonymizerExtension" editable="no"/>
+			<attr name="id" required="yes" default="MouseAnonymizerExtensionID"/>
+			<attr name="root" required="yes" default="roots/MouseAnonymizerExtension"/>
+		</Plugin>
+
+	</Components>
+
+</TemplateDefinitions>
+
