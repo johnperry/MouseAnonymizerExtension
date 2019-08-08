@@ -69,24 +69,26 @@ public class MouseAnonymizerExtension extends AbstractPlugin implements Anonymiz
 		DcmElement sq = outDS.get(sqTag);
 		if (sq == null) sq = outDS.putSQ(sqTag);
 		
-		//Get the first item dataset, creating it if necessary
-		Dataset itemDS = sq.getItem();
-		if (itemDS == null) itemDS = sq.addNewItem();
-		
-		//Create the required elements in itemDS
-		for (int i=2; i<args.length; i++) {
-			logger.debug("processing "+args[i]);
-			if (args[i].startsWith("\"") && args[i].endsWith("\"")) {
-				args[i] = args[i].substring(1, args[i].length()-1);
+		if (args.length > 2) {
+			//Get the first item dataset, creating it if necessary
+			Dataset itemDS = sq.getItem();
+			if (itemDS == null) itemDS = sq.addNewItem();
+
+			//Create the required elements in itemDS
+			for (int i=2; i<args.length; i++) {
+				logger.debug("processing "+args[i]);
+				if (args[i].startsWith("\"") && args[i].endsWith("\"")) {
+					args[i] = args[i].substring(1, args[i].length()-1);
+				}
+				int k = args[i].indexOf("=");
+				if (k == -1) throw new Exception("Improper assignment: "+args[i]);
+				String id = args[i].substring(0, k).trim();
+				String value = args[i].substring(k+1).trim();
+				logger.debug("id = \""+id+"\"; value = \""+value+"\"");
+				int sTag = DicomObject.getElementTag(id);
+				if (sTag == 0) throw new Exception("Unparsable element specification; \""+id+"\"");
+				itemDS.putXX(sTag, value);
 			}
-			int k = args[i].indexOf("=");
-			if (k == -1) throw new Exception("Improper assignment: "+args[i]);
-			String id = args[i].substring(0, k).trim();
-			String value = args[i].substring(k+1).trim();
-			logger.debug("id = \""+id+"\"; value = \""+value+"\"");
-			int sTag = DicomObject.getElementTag(id);
-			if (sTag == 0) throw new Exception("Unparsable element specification; \""+id+"\"");
-			itemDS.putXX(sTag, value);
 		}
 			
 		//Return an instruction to force the anonymizer to keep the element
